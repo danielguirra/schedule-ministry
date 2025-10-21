@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+   api-escala:
+      image: danielguirra/igreja:api-escala
+      container_name: api-escala
+      ports:
+         - '80:80'
+         - '8080:8080'
+      env_file:
+         - .env
