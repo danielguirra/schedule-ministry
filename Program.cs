@@ -3,6 +3,7 @@ using ApiEscala.Exceptions;
 using ApiEscala.Middlewares;
 using ApiEscala.Modules.Auth;
 using ApiEscala.Modules.Guard;
+using ApiEscala.Modules.Member;
 using ApiEscala.Modules.Users;
 using ApiEscala.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -36,10 +37,15 @@ builder.Services.AddCors(options =>
     });
 });
 
+//Setup da api
 builder.Services.AddHttpContextAccessor();
 
+//Modulos Genéricos
+builder.Services.AddUserModule();
+builder.Services.AddMemberModule();
 builder.Services.AddUserModule();
 
+//Auth
 builder.Services.AddAuthModule();
 builder.Services.AddGuardModule();
 
