@@ -29,6 +29,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             {
                 modelBuilder.Entity(entityType.Name).HasIndex(property.Name).IsUnique();
             }
+            modelBuilder
+                .Entity<ScheduleMember>()
+                .HasOne(sm => sm.Schedule)
+                .WithMany(s => s.Members)
+                .HasForeignKey(sm => sm.ScheduleId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         base.OnModelCreating(modelBuilder);

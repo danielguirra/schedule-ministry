@@ -5,6 +5,7 @@ using ApiEscala.Modules.Auth;
 using ApiEscala.Modules.Guard;
 using ApiEscala.Modules.Member;
 using ApiEscala.Modules.Ministry;
+using ApiEscala.Modules.Schedule;
 using ApiEscala.Modules.Users;
 using ApiEscala.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ builder.Services.AddHttpContextAccessor();
 //Modulos Genéricos
 builder.Services.AddUserModule();
 builder.Services.AddMemberModule();
+builder.Services.AddScheduleModule();
 builder.Services.AddMinistryModule();
 builder.Services.AddUserModule();
 
