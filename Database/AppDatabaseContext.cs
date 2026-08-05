@@ -19,6 +19,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("escala-vera");
+
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             IEnumerable<System.Reflection.PropertyInfo> properties = entityType

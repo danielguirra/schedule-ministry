@@ -8,11 +8,11 @@ namespace ApiEscala.Modules.Users;
 
 public class UserService(AppDbContext context) : BaseService(context)
 {
-    public async Task<bool> Exists(string email, string name) =>
-        await context.Users.AnyAsync(u => u.Email == email || u.Name == name);
+    public async Task<bool> Exists(string userName, string name) =>
+        await context.Users.AnyAsync(u => u.UserName == userName || u.Name == name);
 
-    private async Task<UserModel?> GetByEmail(string email) =>
-        await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    private async Task<UserModel?> GetByUserName(string userName) =>
+        await context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 
     private async Task<UserModel> GetByIdOrThrow(Guid id) =>
         await context.Users.FirstOrDefaultAsync(u => u.Id == id)
@@ -20,8 +20,8 @@ public class UserService(AppDbContext context) : BaseService(context)
 
     public async Task<UserModel> Create(UserModel user)
     {
-        if (await Exists(user.Email, user.Name))
-            throw new UserConflictException($"{user.Email} / {user.Name}");
+        if (await Exists(user.UserName, user.Name))
+            throw new UserConflictException($"{user.UserName} / {user.Name}");
 
         PasswordHasher<UserModel>? passwordHasher = new();
         user.Password = passwordHasher.HashPassword(user, user.Password);
@@ -38,7 +38,7 @@ public class UserService(AppDbContext context) : BaseService(context)
     public async Task<bool> ValidateCredentials(LoginBodyModelDto login)
     {
         UserModel? user =
-            await GetByEmail(login.Email) ?? throw new InvalidUserCredentialsException();
+            await GetByUserName(login.UserName) ?? throw new InvalidUserCredentialsException();
 
         PasswordHasher<UserModel>? passwordHasher = new();
         PasswordVerificationResult verify = passwordHasher.VerifyHashedPassword(
@@ -57,7 +57,7 @@ public class UserService(AppDbContext context) : BaseService(context)
     {
         await ValidateCredentials(login);
 
-        UserModel? user = await GetByEmail(login.Email) ?? throw new UserNotFoundException(null);
+        UserModel? user = await GetByUserName(login.UserName) ?? throw new UserNotFoundException(null);
 
         string token = TokenService.GetToken(user);
         return token;
@@ -92,7 +92,7 @@ public class UserService(AppDbContext context) : BaseService(context)
         }
         if (!string.IsNullOrWhiteSpace(dto.Password) && !string.IsNullOrWhiteSpace(dto.NewPassword))
         {
-            LoginBodyModelDto login = new() { Email = findUser.Email, Password = dto.Password };
+            LoginBodyModelDto login = new() { UserName = findUser.UserName, Password = dto.Password };
 
             if (!await ValidateCredentials(login))
                 throw new InvalidUserCredentialsException();
@@ -101,8 +101,8 @@ public class UserService(AppDbContext context) : BaseService(context)
             findUser.Password = passwordHasher.HashPassword(findUser, dto.NewPassword);
         }
 
-        if (!string.IsNullOrWhiteSpace(dto.Email))
-            findUser.Email = dto.Email;
+        if (!string.IsNullOrWhiteSpace(dto.UserName))
+            findUser.UserName = dto.UserName;
 
         if (!string.IsNullOrWhiteSpace(dto.Name))
             findUser.Name = dto.Name;

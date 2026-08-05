@@ -8,5 +8,6 @@ namespace ApiEscala.Modules.Member
         public string? Role { get; set; }
         public string? MinistryRole { get; set; }
         public string? Phone { get; set; }
+        public DateTime? DateOfBirth { get; set; }
     }
 }

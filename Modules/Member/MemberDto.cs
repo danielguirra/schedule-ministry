@@ -45,6 +45,8 @@ public class SaveMemberDto
     [MaxLength(20)]
     public string? Phone { get; set; }
 
+    public DateTime? DateOfBirth { get; set; }
+
     public MemberModel ToModel() =>
         new()
         {
@@ -71,6 +73,8 @@ public class EditMemberDto
 
     [MaxLength(20)]
     public string? Phone { get; set; }
+
+    public DateTime? DateOfBirth { get; set; }
 
     public MemberModel ApplyTo(MemberModel model)
     {

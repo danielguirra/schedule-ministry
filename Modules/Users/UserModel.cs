@@ -11,7 +11,8 @@ namespace ApiEscala.Modules.Users
         public required string Name { get; set; }
 
         [Required]
-        public required string Email { get; set; }
+        [Unique]
+        public required string UserName { get; set; }
 
         [Required]
         [MinLength(8)]

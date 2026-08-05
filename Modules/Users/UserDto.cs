@@ -11,7 +11,7 @@ public class EditUserDto
 {
     public string? Name { get; set; }
     public string? Role { get; set; }
-    public string? Email { get; set; }
+    public string? UserName { get; set; }
     public required Guid Id { get; set; }
     public required string Password { get; set; }
     public string? NewPassword { get; set; }
@@ -19,7 +19,7 @@ public class EditUserDto
 
 public class LoginBodyModelDto
 {
-    public string Email { get; set; } = null!;
+    public string UserName { get; set; } = null!;
 
     public string Password { get; set; } = null!;
 }
